@@ -12,3 +12,35 @@ Signature: Jay Jackson
 
 #include <iostream>
 
+void mazeTraverse(double maze, double size, double x_coord, double y_coord,
+	double direction);
+void validMove(double maze, double x_coord, double y_coord);
+void isSolved(double array_size, double x_coord, double y_coord);
+void printMaze(double maze, double size);
+
+
+int main()
+{
+	std::cout << "Random start";
+}
+
+void mazeTraverse(double maze, double size, double x_coord, double y_coord,
+	double direction)
+{
+
+}
+
+void validMove(double maze, double x_coord, double y_coord)
+{
+
+}
+
+void isSolved(double array_size, double x_coord, double y_coord)
+{
+
+}
+
+void printMaze(double maze, double size)
+{
+
+}

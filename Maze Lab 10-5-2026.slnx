@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Maze Lab 10-5-2026/Maze Lab 10-5-2026.vcxproj" />
+</Solution>

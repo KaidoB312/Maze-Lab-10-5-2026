@@ -14,6 +14,7 @@ Signature: Jay Jackson
 
 #include <iostream>
 #include <windows.h>
+#include "MyArray.h"
 
 const int MAZE_SIZE = 12;
 const int ENTRANCE_X = 2;
@@ -22,62 +23,56 @@ const int DELAY_MS = 200;
 
 enum Direction { DOWN, RIGHT, UP, LEFT };
 
-void mazeTraverse(char maze[][MAZE_SIZE], int size, int xCoord, int yCoord,
+void mazeTraverse(MyArray &maze, int mazeSize, int xCoord, int yCoord,
     Direction direction);
-bool validMove(char maze[][MAZE_SIZE], int xCoord, int yCoord);
+
+bool validMove(const MyArray &maze, int xCoord, int yCoord);
+
 bool isSolved(int arraySize, int xCoord, int yCoord);
-void printMaze(char maze[][MAZE_SIZE], int size);
+
+void printMaze(const MyArray &maze, int mazeSize);
+
 void clearScreen();
 
 
 int main()
 {
-    char maze[MAZE_SIZE][MAZE_SIZE] = {
-        {'#','#','#','#','#','#','#','#','#','#','#','#'},
-        {'#','.','.','.','#','.','.','.','.','.','.','#'},
-        {'.','.','#','.','#','.','#','#','#','#','.','#'},
-        {'#','#','#','.','#','.','.','.','.','#','.','#'},
-        {'#','.','.','.','.','#','#','#','.','#','.','.'},
-        {'#','#','#','#','.','#','.','#','.','#','.','#'},
-        {'#','.','.','#','.','#','.','#','.','#','.','#'},
-        {'#','#','.','#','.','#','.','#','.','#','.','#'},
-        {'#','.','.','.','.','.','.','.','.','#','.','#'},
-        {'#','#','#','#','#','#','.','#','#','#','.','#'},
-        {'#','.','.','.','.','.','.','#','.','.','.','#'},
-        {'#','#','#','#','#','#','#','#','#','#','#','#'}
-    };
+    // Create maze; constructor initializes with hardcoded layout.
+    MyArray maze;
 
+    // Solve the maze starting from entrance at row ENTRANCE_X, col ENTRANCE_Y,
+    // heading DOWN.
     mazeTraverse(maze, MAZE_SIZE, ENTRANCE_X, ENTRANCE_Y, DOWN);
 
     return 0;
 }
 
 
-void mazeTraverse(char maze[][MAZE_SIZE], int size, int xCoord, int yCoord,
+void mazeTraverse(MyArray &maze, int mazeSize, int xCoord, int yCoord,
     Direction direction)
 {
     if (xCoord == ENTRANCE_X && yCoord == ENTRANCE_Y &&
-        maze[xCoord][yCoord] == 'X')
+        maze.getUnsafe(xCoord, yCoord) == 'X')
     {
         clearScreen();
         std::cout << "Maze is unsolvable.\n";
         return;
     }
 
-    maze[xCoord][yCoord] = 'X';
+    maze.set(xCoord, yCoord, 'X');
 
     clearScreen();
-    printMaze(maze, size);
+    printMaze(maze, mazeSize);
     Sleep(DELAY_MS);
 
-    if (isSolved(size, xCoord, yCoord) &&
+    if (isSolved(mazeSize, xCoord, yCoord) &&
         !(xCoord == ENTRANCE_X && yCoord == ENTRANCE_Y))
     {
         std::cout << "Maze solved!\n";
         return;
     }
 
-    for (int i = 0; i < 4; ++i)
+    for (int step = 0; step < 4; ++step)
     {
         int nextX = xCoord;
         int nextY = yCoord;
@@ -102,7 +97,7 @@ void mazeTraverse(char maze[][MAZE_SIZE], int size, int xCoord, int yCoord,
         {
             Direction nextDirection = static_cast<Direction>(
                 (direction + 3) % 4);
-            mazeTraverse(maze, size, nextX, nextY, nextDirection);
+            mazeTraverse(maze, mazeSize, nextX, nextY, nextDirection);
             return;
         }
 
@@ -111,7 +106,7 @@ void mazeTraverse(char maze[][MAZE_SIZE], int size, int xCoord, int yCoord,
 }
 
 
-bool validMove(char maze[][MAZE_SIZE], int xCoord, int yCoord)
+bool validMove(const MyArray &maze, int xCoord, int yCoord)
 {
     if (xCoord < 0 || xCoord >= MAZE_SIZE || yCoord < 0 ||
         yCoord >= MAZE_SIZE)
@@ -119,7 +114,7 @@ bool validMove(char maze[][MAZE_SIZE], int xCoord, int yCoord)
         return false;
     }
 
-    return maze[xCoord][yCoord] != '#';
+    return maze.getUnsafe(xCoord, yCoord) != '#';
 }
 
 
@@ -130,16 +125,18 @@ bool isSolved(int arraySize, int xCoord, int yCoord)
 }
 
 
-void printMaze(char maze[][MAZE_SIZE], int size)
+void printMaze(const MyArray &maze, int mazeSize)
 {
-    for (int i = 0; i < size; ++i)
+    for (int rowIndex = 0; rowIndex < mazeSize; ++rowIndex)
     {
-        for (int j = 0; j < size; ++j)
+        for (int colIndex = 0; colIndex < mazeSize; ++colIndex)
         {
-            std::cout << maze[i][j] << ' ';
+            std::cout << maze.getUnsafe(rowIndex, colIndex) << ' ';
         }
+
         std::cout << '\n';
     }
+
     std::cout << '\n';
 }
 

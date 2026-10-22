@@ -187,12 +187,12 @@ void mazeGenerator( char maze[][MAZE_SIZE], int mazeSize, int *startX,
         return (seed / 65536) % maxVal;
     };
 
-    // Initialize all cells as walls.
+    // Initialize all cells.
     for (int row = 0; row < mazeSize; ++row)
     {
         for (int col = 0; col < mazeSize; ++col)
         {
-            maze[row][col] = '#';
+            maze[row][col] = '.';
         }
     }
 

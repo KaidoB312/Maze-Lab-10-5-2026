@@ -140,10 +140,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Maze Lab 10-5-2026.cpp" />
-    <ClCompile Include="MyArray.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="MyArray.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
